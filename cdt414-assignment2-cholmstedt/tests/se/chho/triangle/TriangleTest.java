@@ -23,7 +23,12 @@ public class TriangleTest {
 	@Test
 	public void testIntegerInput() 
 	{
-		assertTrue(false);
+		try {
+			Triangle integerInputT1	= new Triangle(2,2,2);
+			
+		} catch (Exception e) {
+			
+		}
 		
 		// TODO Create three triangles, each triangle has non-integer in one position.
 		// TODO Catch triangle exceptions.
