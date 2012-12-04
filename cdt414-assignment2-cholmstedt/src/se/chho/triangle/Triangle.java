@@ -5,7 +5,8 @@ public class Triangle {
 	private int sideOne;
 	private int sideTwo;
 	private int sideThree;
-
+	private String triangleType;  
+	
 	/***
 	 * Constructor
 	 * @param i
@@ -17,6 +18,15 @@ public class Triangle {
 		this.sideOne = i;
 		this.sideTwo = j;
 		this.sideThree = k;
+		this.triangleType = "Not set";
+		
+		decideTriangleType();
+		this.toString();
+	}
+	
+	private void decideTriangleType()
+	{
+
 	}
 	
 	@Override
@@ -25,14 +35,7 @@ public class Triangle {
 	 */
 	public String toString() 
 	{
-		if (this.sideOne < this.sideTwo) {
-			if (this.sideTwo < this.sideThree) {
-				return "Scalene - " + this.sideOne + ","
-						+ this.sideTwo + ","
-						+ this.sideThree;
-			}
-		}
-		return "hej";
+		return this.triangleType;
 	}
 
 }

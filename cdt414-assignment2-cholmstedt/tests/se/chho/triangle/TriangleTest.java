@@ -10,10 +10,10 @@ public class TriangleTest {
 	 * Test Constructor
 	 */
 	@Test
-	public void testTriangle()
+	public void testTriangleConstructor()
 	{
-		Triangle t1 = new Triangle(1,2,3);
-		assertEquals("Scalene - 1,2,3",t1.toString());
+		Triangle t1 = new Triangle(2,4,5);
+		assertEquals("Scalene",t1.toString());
 	}
 	
 	/***
