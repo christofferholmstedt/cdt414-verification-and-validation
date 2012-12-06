@@ -20,18 +20,38 @@ public class Triangle {
 		this.sideThree = k;
 		this.triangleType = "Not set";
 		
-		decideTriangleType();
-		this.toString();
+		this.triangleType = decideTriangleType();
+		System.out.println(this.toString());
 	}
 	
-	private void decideTriangleType()
+	private String decideTriangleType()
 	{
-
+		// Validate input data
+		if ( (this.sideOne <= 0) || (this.sideTwo <= 0) || (this.sideThree <= 0) ) {
+			return "Invalid";
+			
+		} else if ( (this.sideOne + this.sideTwo <= this.sideThree) || 
+					(this.sideOne + this.sideThree <= this.sideTwo) || 
+					(this.sideTwo + this.sideThree <= this.sideOne) ) {
+			return "Invalid";
+		}
+		
+		// Set Triangle type
+		if ( (this.sideOne == this.sideTwo) && (this.sideOne == this.sideThree) ) {
+			return "Equilateral";
+			
+		} else if ( (this.sideOne == this.sideTwo) || (this.sideOne == this.sideThree) || (this.sideTwo == this.sideThree) ) {
+			return "Isosceles";
+			
+		} else if ( (this.sideOne != this.sideTwo) && (this.sideOne != this.sideThree) && (this.sideTwo != this.sideThree) ) {
+			return "Scalene";
+		}
+		return "Not set";
 	}
 	
 	@Override
 	/***
-	 * Override toString java.lang.Object metod
+	 * Override toString java.lang.Object method
 	 */
 	public String toString() 
 	{

@@ -17,22 +17,63 @@ public class TriangleTest {
 	}
 	
 	/***
-	 * Triangle MUST throw exception when 
-	 * non-integer sent to the constructor as any side length.
+	 * Test that the Triangle class can identify a
+	 * Equilateral triangle. 
 	 */
 	@Test
-	public void testIntegerInput() 
+	public void testEquilateralTriangle() 
+	{		
+		Triangle t2 = new Triangle(8,8,8);
+		assertEquals("Equilateral", t2.toString());
+	}
+	
+	/***
+	 * Test that the Triangle class can identify a
+	 * Isosceles triangle. 
+	 */
+	@Test
+	public void testIsoscelesTriangle() 
+	{	
+		Triangle t3 = new Triangle(13,7,7);
+		Triangle t4 = new Triangle(7,13,7);
+		Triangle t5 = new Triangle(7,7,13);
+		assertEquals("Isosceles", t3.toString());
+		assertEquals("Isosceles", t4.toString());	
+		assertEquals("Isosceles", t5.toString());	
+	}
+	
+	/***
+	 * Test for invalid Triangles
+	 */
+	@Test
+	public void testInvalidTriangle() 
 	{
-		try {
-			Triangle integerInputT1	= new Triangle(2,2,2);
-			
-		} catch (Exception e) {
-			
-		}
+		// Wrong dimensions
+		Triangle t6 = new Triangle(4,6,100);
+		Triangle t7 = new Triangle(4,100,6);
+		Triangle t8 = new Triangle(100,6,4);
+		// Zero input
+		Triangle t9 = new Triangle(0,0,0);
+		Triangle t10 = new Triangle(0,1,1);
+		Triangle t11 = new Triangle(1,0,1);
+		Triangle t12 = new Triangle(1,1,0);
+		// Negative input
+		Triangle t13 = new Triangle(-13,7,7);
+		Triangle t14 = new Triangle(13,-7,7);
+		Triangle t15 = new Triangle(13,7,-7);
 		
-		// TODO Create three triangles, each triangle has non-integer in one position.
-		// TODO Catch triangle exceptions.
-		// The Triangle class should throw exceptions immediatly.
+		assertEquals("Invalid",t6.toString());
+		assertEquals("Invalid",t7.toString());
+		assertEquals("Invalid",t8.toString());
+		
+		assertEquals("Invalid",t9.toString());
+		assertEquals("Invalid",t10.toString());
+		assertEquals("Invalid",t11.toString());
+		assertEquals("Invalid",t12.toString());
+		
+		assertEquals("Invalid",t13.toString());
+		assertEquals("Invalid",t14.toString());
+		assertEquals("Invalid",t15.toString());
 	}
 	
 	/***
@@ -42,30 +83,8 @@ public class TriangleTest {
 	@Test
 	public void testScaleneTriangle() 
 	{
-		Triangle t2 = new Triangle(4,6,100);
-		assertEquals("Scalene - 4,6,100",t2.toString());
-	}
-
-	/***
-	 * Test that the Triangle class can identify a
-	 * Isosceles triangle. 
-	 */
-	@Test
-	public void testIsoscelesTriangle() 
-	{
-		Triangle t3 = new Triangle(7,7,13);
-		assertEquals("Isosceles - 7,7,100", t3.toString());	
-	}
-
-	/***
-	 * Test that the Triangle class can identify a
-	 * Equilateral triangle. 
-	 */
-	@Test
-	public void testEquilateralTriangle() 
-	{		
-		Triangle t4 = new Triangle(8,8,8);
-		assertEquals("Equilateral - 8,8,8", t4.toString());
+		Triangle t16 = new Triangle(4,6,5);
+		assertEquals("Scalene",t16.toString());
 	}
 
 }
