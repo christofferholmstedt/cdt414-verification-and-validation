@@ -24,28 +24,35 @@ public class UrlParser {
 
 	/***
 	 * Validates whether the Protocol in this instance is valid or not.
-	 * If invalid this.Protocol is set to "invalid".
+	 * If invalid this.Protocol is set to "Invalid".
 	 */
 	private void validateProtocol() {
-		// TODO Auto-generated method stub
-		
+		if (!this.protocol.matches("(http|ftp|smtp)")) {
+			this.protocol = "Invalid";
+		}
 	}
 	
 	/***
 	 * Validates whether the Domain in this instance is valid or not.
-	 * If invalid this.domain is set to "invalid".
+	 * If invalid this.domain is set to "Invalid".
 	 */
 	private void validateDomain() {
-		// TODO Auto-generated method stub
-		
+		// Regex found from http://rubular.com/r/yP6dHFEhrl
+		// by Brian Ray at "http://stackoverflow.com/questions/1128168/validation-for-url-domain-using-regex-rails"
+		// Slightly modified.
+		if (!this.domain.matches("[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,6}")) {
+			this.domain = "Invalid";
+		}
 	}
 	
 	/***
 	 * Validates whether the Path in this instance is valid or not.
-	 * If invalid this.path is set to "invalid".
+	 * If invalid this.path is set to "Invalid".
 	 */
 	private void validatePath() {
-		
+		if (!this.path.matches("(\\s)|[a-z0-9]*|((?=.*[/~?=]).*)")) {
+			this.path = "Invalid";
+		}
 	}
 	/***
 	 * Decompose the supplied url into three different parts.
@@ -60,24 +67,27 @@ public class UrlParser {
 			// in the url.
 
 		// No protocol delimiter
-		
-		//*************** CONTINUE HERE **************
-		//*************** CONTINUE HERE **************
-		//*************** CONTINUE HERE **************
-		// Try to exclude all strings which don't have the
-		// protocol delimiter.
-		} else if (var1.matches("(.*)?!(://)(.*)")) {
+		} else if (var1.matches("((?!://).)*")) {
 			// Do nothing default values are Invalid for all subcomponents
 			// in the url.
-			System.out.println(this.protocol);
-			
+		
 		} else {
 			String[] subStrings = var1.split("(://)",2);
 			this.protocol = subStrings[0];
 	
-			String[] subStrings2 = subStrings[1].split("/",2);
-			this.domain = subStrings2[0];
-			this.path = subStrings2[1];
+			// No path delimiter
+			if (subStrings[1].matches("(?=.*[/]).*")) {
+				String[] subStrings2 = subStrings[1].split("/",2);
+				
+				
+				this.domain = subStrings2[0];
+				this.path = subStrings2[1];
+				
+			} else {
+				this.path = "Invalid";
+				this.domain = "Invalid";
+				this.protocol = "Invalid";
+			}
 		}
 	}
 
