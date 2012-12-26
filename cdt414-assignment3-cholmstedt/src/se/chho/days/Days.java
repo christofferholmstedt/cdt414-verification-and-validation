@@ -5,7 +5,6 @@ package se.chho.days;
  * Accepts values from year 1 to year 2999.
  * 
  * @author christoffer
- *
  */
 public class Days {
 	int date1Year, date2Year, date1Month, date2Month, date1Day, date2Day;
@@ -47,10 +46,11 @@ public class Days {
 	 */
 	private void calculateDays() 
 	{
-		int k = -1;
-		k = Math.abs(this.date1Day - this.date2Day);
+		int numberOfDays = -1;		
 		
-		this.setDays(k);
+		numberOfDays = Math.abs(this.date1Day - this.date2Day);
+		
+		this.setDays(numberOfDays);
 	}
 	
 	/***
@@ -71,6 +71,23 @@ public class Days {
 			this.days = -1;
 		} else {
 			this.days = days;
+		}
+	}
+
+	/***
+	 * Source: http://en.wikipedia.org/wiki/Leap_year#Algorithm
+	 * @param year Year as an integer
+	 * @return int 1 for true and 0 for false.
+	 */
+	public int isLeapYear(int year) {
+		if (year % 400 == 0) {
+			return 1;
+		} else if (year % 100 == 0) {
+			return 0;
+		} else if (year % 4 == 0) {
+			return 1;
+		} else {
+			return 0;
 		}
 	}
 	

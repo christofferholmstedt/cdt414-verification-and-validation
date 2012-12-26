@@ -6,10 +6,41 @@ import org.junit.Test;
 
 public class DaysTest {
 
+	//******** Number of days between known intervals
+	@Test
+	public void testDayCalculation1() {
+		Days d = new Days("2012-01-01", "2012-01-31");
+		assertEquals(30, d.getDays());
+	}
+	
+	@Test
+	public void testDayCalculation2() {
+		Days d = new Days("2012-01-01", "2012-02-29");
+		assertEquals(59, d.getDays());
+	}
+	
+	@Test
+	public void testDayCalculation3() {
+		Days d = new Days("2012-01-01", "2013-03-01");
+		assertEquals(425, d.getDays());
+	}
+	
+	@Test
+	public void testDayCalculation4() {
+		Days d = new Days("2012-01-01", "2213-03-01");
+		assertEquals(73473, d.getDays());
+	}
+	
+	@Test
+	// Reversed order of previous calculation
+	public void testDayCalculation5() {
+		Days d = new Days("2213-03-01", "2012-01-01");
+		assertEquals(73473, d.getDays());
+	}
 	//******** General testing	
 	@Test
-	// Positive testing, basic case, only few days between
-	public void testDayCalculation() {
+	// Basic case, only few days between
+	public void testBasicDayCalculation() {
 		Days d = new Days("2012-01-12", "2012-01-14");
 		assertEquals(2, d.getDays());
 	}
@@ -19,6 +50,16 @@ public class DaysTest {
 	public void testInvalidStringInput() {
 		Days d = new Days("20120112", "2012-01-14");
 		assertEquals(-1, d.getDays());
+	}
+	
+	@Test
+	// Year value below 1
+	public void testLeapYear() {
+		Days d = new Days("2001-01-12", "2012-02-23");
+		assertEquals(1, d.isLeapYear(2000));
+		assertEquals(1, d.isLeapYear(2004));
+		assertEquals(0, d.isLeapYear(1900));
+		assertEquals(0, d.isLeapYear(2013));
 	}
 	
 	//******** Day values	
