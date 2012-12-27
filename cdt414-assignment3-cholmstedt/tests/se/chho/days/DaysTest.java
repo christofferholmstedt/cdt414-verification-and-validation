@@ -6,6 +6,42 @@ import org.junit.Test;
 
 public class DaysTest {
 
+
+	//******** Test earliest date and equal dates.
+	@Test
+	public void testDaysInAYear1() {
+		Days d = new Days("2011-01-01", "2013-01-31");
+		assertEquals(366, d.numberOfDaysInYear(2012));
+	}
+	
+	@Test
+	public void testDaysInAYear2() {
+		Days d = new Days("2012-01-01", "2014-01-31");
+		assertEquals(365, d.numberOfDaysInYear(2013));
+	}
+	
+	//******** Test earliest date and equal dates.
+	@Test
+	public void testEarliestDate1() {
+		Days d = new Days("2012-01-01", "2012-01-31");
+		assertEquals(1, d.earliestDate());
+	}
+	
+	@Test
+	// Input has the second date as earliest
+	// but constructor will swap them and earliestDate()
+	// will return 1.
+	public void testEarliestDate2() {
+		Days d = new Days("2012-01-01", "1999-01-31");
+		assertEquals(1, d.earliestDate());
+	}
+	
+	@Test
+	public void testEqualDates() {
+		Days d = new Days("2012-01-01", "2012-01-01");
+		assertEquals(0, d.earliestDate());
+	}
+		
 	//******** Number of days between known intervals
 	@Test
 	public void testDayCalculation1() {
@@ -56,10 +92,10 @@ public class DaysTest {
 	// Year value below 1
 	public void testLeapYear() {
 		Days d = new Days("2001-01-12", "2012-02-23");
-		assertEquals(1, d.isLeapYear(2000));
-		assertEquals(1, d.isLeapYear(2004));
-		assertEquals(0, d.isLeapYear(1900));
-		assertEquals(0, d.isLeapYear(2013));
+		assertTrue(d.isLeapYear(2000));
+		assertTrue(d.isLeapYear(2004));
+		assertFalse(d.isLeapYear(1900));
+		assertFalse(d.isLeapYear(2013));
 	}
 	
 	//******** Day values	
@@ -102,7 +138,7 @@ public class DaysTest {
 	@Test
 	// Year value below 1
 	public void testInvalidYearInput2() {
-		Days d = new Days("2012-01-12", "0000-02-23");
+		Days d = new Days("2012-01-12", "4000-02-23");
 		assertEquals(-1, d.getDays());
 	}
 
