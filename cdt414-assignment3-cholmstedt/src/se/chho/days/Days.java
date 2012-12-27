@@ -1,5 +1,7 @@
 package se.chho.days;
 
+import java.util.ArrayList;
+
 /***
  * Days class calculates number of days between two dates.
  * Accepts values from year 1 to year 2999.
@@ -7,6 +9,8 @@ package se.chho.days;
  * @author christoffer
  */
 public class Days {
+	private int daysInMonth[][]; 
+	// private ArrayList<Integer> results = new ArrayList<Integer>();
 	int date1Year, date2Year, date1Month, date2Month, date1Day, date2Day;
 	int totalNumberOfDays = -1;
 	boolean errorInCalculation = false;
