@@ -1,7 +1,5 @@
 package se.chho.days;
 
-import java.util.ArrayList;
-
 /***
  * Days class calculates number of days between two dates.
  * Accepts values from year 1 to year 2999.
@@ -9,8 +7,9 @@ import java.util.ArrayList;
  * @author christoffer
  */
 public class Days {
-	private int daysInMonth[][]; 
-	// private ArrayList<Integer> results = new ArrayList<Integer>();
+	private int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	private int[] daysInMonthLeapYear = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; 
+	
 	int date1Year, date2Year, date1Month, date2Month, date1Day, date2Day;
 	int totalNumberOfDays = -1;
 	boolean errorInCalculation = false;
@@ -30,10 +29,17 @@ public class Days {
 			this.date1Month = Integer.parseInt(parsedDate1Strings[1]);
 			this.date1Day = Integer.parseInt(parsedDate1Strings[2]);
 			
+			if (!validDate(this.date1Year, this.date1Month, this.date1Day))
+				this.errorInCalculation = true;
+			
 			// Input date 2
 			this.date2Year = Integer.parseInt(parsedDate2Strings[0]);
 			this.date2Month = Integer.parseInt(parsedDate2Strings[1]);
 			this.date2Day = Integer.parseInt(parsedDate2Strings[2]);
+			
+			if (!validDate(this.date2Year, this.date2Month, this.date2Day))
+				this.errorInCalculation = true;
+			
 			
 			// Make sure this.date1XYZ stores the earliest date of the two given as input.
 			if (earliestDate() == 0) 
@@ -82,10 +88,46 @@ public class Days {
 	 */
 	private void calculateDays() 
 	{
-		int numberOfDays = -1;		
+		int numberOfDays = 0;		
+		int tempYear = this.date1Year;
 		
-		numberOfDays = Math.abs(this.date1Day - this.date2Day);
-		
+		// ************** If more than a complete year is separating the dates 
+		if (this.date2Year - this.date1Year > 1)
+		{
+			// Count days until first last of December.
+			numberOfDays += daysUntilLastOfDecember(this.date1Year, this.date1Month, this.date1Day);
+			
+			// Count all days for complete years.
+			while (this.date2Year - tempYear > 1) {
+				numberOfDays += daysInYear(tempYear);
+				tempYear++;
+			}
+			
+			// Count days from the first of January in the last year
+			// Subtract one to not include the last date.
+			numberOfDays += daysFromFirstOfJanuary(this.date2Year, this.date2Month, this.date2Day) - 1;
+		}
+		// ************** If there is no complete year between the dates
+		else if (this.date2Year - this.date1Year == 1) 
+		{
+			// Count days until first last of December.
+			numberOfDays += daysUntilLastOfDecember(this.date1Year, this.date1Month, this.date1Day);
+			
+			// Count days from the first of January in the last year
+			// Subtract one to not include the last date.
+			numberOfDays += daysFromFirstOfJanuary(this.date2Year, this.date2Month, this.date2Day) - 1;
+		}
+		// ************** If there is only a few days or months in the same year
+		// ************** between the dates
+		else if (this.date1Year == this.date2Year) 
+		{
+			// Count days from the first of January for the last date
+			numberOfDays += daysFromFirstOfJanuary(this.date2Year, this.date2Month, this.date2Day);
+			
+			// Subtract days from the first of January up until the day of the first date
+			numberOfDays -= daysFromFirstOfJanuary(this.date1Year, this.date1Month, this.date1Day);
+		}
+
 		this.setDays(numberOfDays);
 	}
 	
@@ -152,14 +194,38 @@ public class Days {
 		return 2;
 	}
 	
-	/*** 
-	 * numberOfDaysFromFirstOfJanury
-	 * 
+	/***
+	 * Count the number of days from the first of january until the 
+	 * given date, including the first of january and the given date.
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @return
 	 */
-	public int numberOfDaysFromFirstOfJanuary()
+	public int daysFromFirstOfJanuary(int year, int month, int day)
 	{
+		int countDays = 0;
+		int countMonth = 1;
 		
-		return 1;
+		if (isLeapYear(year)) 
+		{
+			while (countMonth < month) 
+			{
+				countDays += this.daysInMonthLeapYear[countMonth];
+				countMonth++;
+			}
+			countDays += day;
+		} 
+		else 
+		{
+			while (countMonth < month) 
+			{
+				countDays += this.daysInMonth[countMonth];
+				countMonth++;
+			}
+			countDays += day;
+		}
+		return countDays;
 	}
 
 	/***
@@ -167,7 +233,7 @@ public class Days {
 	 * @param year
 	 * @return
 	 */
-	public int numberOfDaysInYear(int year) 
+	public int daysInYear(int year) 
 	{
 		if (isLeapYear(year))
 		{
@@ -177,6 +243,67 @@ public class Days {
 		{
 			return 365;
 		}
+	}
+
+	/***
+	 * Count the number of days from given date to the last of december, including
+	 * starting and finishing day.
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @return
+	 */
+
+	public int daysUntilLastOfDecember(int year, int month, int day) {
+		int countDays = 0;
+		int countMonth = month + 1;
+		
+		if (isLeapYear(year)) 
+		{
+			countDays += this.daysInMonthLeapYear[month] - day + 1;
+			
+			while (countMonth > month && countMonth <= 12) 
+			{
+				countDays += this.daysInMonthLeapYear[countMonth];
+				countMonth++;
+			}
+			
+		} 
+		else 
+		{
+			countDays += this.daysInMonth[month] - day + 1;
+			
+			while (countMonth > month && countMonth <= 12) 
+			{
+				countDays += this.daysInMonth[countMonth];
+				countMonth++;
+			}
+		}
+		return countDays;
+	}
+
+
+	/***
+	 * Check if date given is a valid date.
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @return boolean 
+	 */
+	public boolean validDate(int year, int month, int day) {
+		
+		if (isLeapYear(year)) 
+		{
+			if (this.daysInMonthLeapYear[month] >= day)
+				return true;
+		}
+		else 
+		{		
+			if (this.daysInMonth[month] >= day)
+				return true;
+		}
+		
+		return false;
 	}
 	
 }
