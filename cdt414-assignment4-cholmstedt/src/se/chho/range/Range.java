@@ -60,8 +60,35 @@ public class Range {
 
 	public Range(Range r1, Range r2) 
 	{
-		// TODO: Fortsätt här.
-		// TODO Auto-generated constructor stub
+		if (r1.getUpperBoundary() < r2.getLowerBoundary() ||
+			r1.getLowerBoundary() > r2.getUpperBoundary()) {
+			this.emptyRange = true;
+		
+		} else if (r1.getLowerBoundary() <= r2.getLowerBoundary() &&
+					r1.getUpperBoundary() >= r2.getUpperBoundary()) {
+			this.emptyRange = false;
+			this.lowerBoundary = r1.getLowerBoundary();
+			this.upperBoundary = r1.getUpperBoundary();
+			
+		} else if (r2.getLowerBoundary() <= r1.getLowerBoundary() &&
+					r2.getUpperBoundary() >= r1.getUpperBoundary()) {
+			this.emptyRange = false;
+			this.lowerBoundary = r2.getLowerBoundary();
+			this.upperBoundary = r2.getUpperBoundary();
+			
+		} else if (r1.getUpperBoundary() >= r2.getLowerBoundary() &&
+					r1.getLowerBoundary() <= r2.getLowerBoundary() && 
+					r1.getUpperBoundary() < r2.getUpperBoundary()) {
+			this.emptyRange = false;
+			this.lowerBoundary = r2.getLowerBoundary();
+			this.upperBoundary = r1.getUpperBoundary();
+		} else if (r2.getUpperBoundary() >= r1.getLowerBoundary() &&
+					r2.getLowerBoundary() <= r1.getLowerBoundary() && 
+					r2.getUpperBoundary() < r1.getUpperBoundary()) {
+			this.emptyRange = false;
+			this.lowerBoundary = r1.getLowerBoundary();
+			this.upperBoundary = r2.getUpperBoundary();
+	}
 	}
 
 	/***
@@ -73,12 +100,22 @@ public class Range {
 		return this.lowerBoundary;
 	}
 
+	/***
+	 * Returns the upper boundary in this object's range
+	 * @return int The upper boundary in this object's range
+	 */
 	public int getUpperBoundary() 
 	{
 		return this.upperBoundary;
 	}
 
-	public boolean inRange(int i) {
+	/***
+	 * Returns boolean whether the given integer is within the range in current object or not.
+	 * @param i integer to verify if it's within range
+	 * @return true if the integer is within range.
+	 */
+	public boolean inRange(int i) 
+	{
 		if (i >= this.lowerBoundary && i <= this.upperBoundary && !this.emptyRange) {
 			return true;
 		} else {
@@ -86,7 +123,12 @@ public class Range {
 		}
 	}
 
-	public boolean isEmptyRange() {
+	/***
+	 * Returns the status true or false if the object has an empty range or not.
+	 * @return boolean
+	 */
+	public boolean isEmptyRange() 
+	{
 		return this.emptyRange;
 	}
 

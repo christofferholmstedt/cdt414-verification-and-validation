@@ -115,4 +115,53 @@ public class RangeTest {
 		Range r3 = new Range(r1,r2);
 		assertTrue(r3.isEmptyRange());
 	}
+	
+	@Test
+	public void testMergeTwoRangeObjects3()
+	{
+		Range r1 = new Range("[10,20]");
+		Range r2 = new Range("[5,15]");
+		Range r3 = new Range(r1,r2);
+		assertEquals(10, r3.getLowerBoundary());
+		assertEquals(15, r3.getUpperBoundary());
+	}
+	
+	@Test
+	public void testMergeTwoRangeObjects4()
+	{
+		Range r1 = new Range("[10,20]");
+		Range r2 = new Range("[5,7]");
+		Range r3 = new Range(r1,r2);
+		assertTrue(r3.isEmptyRange());
+	}
+	
+	@Test
+	public void testMergeTwoRangeObjects5()
+	{
+		Range r1 = new Range("[10,20]");
+		Range r2 = new Range("[12,17]");
+		Range r3 = new Range(r1,r2);
+		assertEquals(10, r3.getLowerBoundary());
+		assertEquals(20, r3.getUpperBoundary());
+	}
+	
+	@Test
+	public void testMergeTwoRangeObjects6()
+	{
+		Range r1 = new Range("[12,17]");
+		Range r2 = new Range("[10,20]");
+		Range r3 = new Range(r1,r2);
+		assertEquals(10, r3.getLowerBoundary());
+		assertEquals(20, r3.getUpperBoundary());
+	}
+	
+	@Test
+	public void testMergeTwoRangeObjects7()
+	{
+		Range r1 = new Range("[10,10]");
+		Range r2 = new Range("[10,10]");
+		Range r3 = new Range(r1,r2);
+		assertEquals(10, r3.getLowerBoundary());
+		assertEquals(10, r3.getUpperBoundary());
+	}
 }
